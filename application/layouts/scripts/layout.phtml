@@ -1,0 +1,139 @@
+<?php
+// Let us create our sample order object - this should ofcourse be build in the model
+
+/* dump of the config files used in this example
+== application.ini ==
+maa.analytics.code = 'UA-XXXXX-Y';
+maa.analytics.browserdetection = true
+
+maa.analytics.setAllowAnchor = true
+maa.analytics.setCampContentKey = 'setCampContentKey'
+maa.analytics.setCampMediumKey = 'setCampMediumKey'
+maa.analytics.setCampNameKey = 'setCampNameKey'
+maa.analytics.setCampNOKey = 'setCampNOKey'
+maa.analytics.setCampSourceKey = 'setCampSourceKey'
+maa.analytics.setCampTermKey = 'setCampTermKey'
+maa.analytics.setCampaignTrack = true
+maa.analytics.setCampaignCookieTimeout = 31536000000
+
+maa.analytics.setDomainName = 'setDomainName'
+maa.analytics.setAllowLinker = true
+
+maa.analytics.checkTransSum = false
+
+== test.ini ==
+[production]
+maa.analytics.code = 'COMES-FROM-TEST.INI';
+
+== test2.ini ==
+[testing]
+maa.analytics.setCampNameKey = 'COMES-FROM-TEST2.INI'
+
+*/
+
+$orderobject = new Maa_Analytics_Ecommerce(1234, 14.99);
+$orderobject->setStorename('Mountain View')
+        ->setTax(1)
+        ->setShipping(2)
+        ->setCity('San Jose')
+        ->setState('California')
+        ->setCountry('USA')
+        ->addItems(
+            new Maa_Analytics_Ecommerce_Item(11.99, 2, array('Sku' => '2', 'Productname' => 'Sweater', 'Category' => 'Yellow')),
+            new Maa_Analytics_Ecommerce_Item(1, 1, array('sku' => '3', 'productname' => 'DVD', 'category' => 'Spiderman'))
+        );
+
+// And create our analytics object - with 2 test config files
+$analyticsobject = new Maa_Analytics();
+$analyticsobject->loadConfigs(
+    new Zend_Config_Ini($this->baseUrl() . '../application/configs/test.ini', 'production'),
+    new Zend_Config_Ini($this->baseUrl() . '../application/configs/test2.ini', 'testing')
+)
+// And add our order to the analytics
+->addOrder($orderobject);
+
+/* The output generated will be like this */
+/*
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'COMES-FROM-TEST.INI']);
+_gaq.push(['_setClientInfo', 'false']);
+_gaq.push(['_setAllowHash', 'false']);
+_gaq.push(['_setDetectFlash', 'false']);
+_gaq.push(['_setDetectTitle', 'false']);
+_gaq.push(['_setAllowAnchor', '1']);
+_gaq.push(['_setCampContentKey', 'setCampContentKey']);
+_gaq.push(['_setCampMediumKey', 'setCampMediumKey']);
+_gaq.push(['_setCampNameKey', 'COMES-FROM-TEST2.INI']);
+_gaq.push(['_setCampNOKey', 'setCampNOKey']);
+_gaq.push(['_setCampSourceKey', 'setCampSourceKey']);
+_gaq.push(['_setCampTermKey', 'setCampTermKey']);
+_gaq.push(['_setCampaignTrack', '1']);
+_gaq.push(['_setCampaignCookieTimeout', '31536000000']);
+_gaq.push(['_setDomainName', 'setDomainName']);
+_gaq.push(['_setAllowLinker', '1']);
+_gaq.push(['_trackPageview']);
+_gaq.push(['_addTrans', ''1234', 'Mountain View', '14.99', '1', '2', 'San Jose', 'California', 'USA'']);
+_gaq.push(['_addItem', ''1234', '3', 'DVD', 'Spiderman', '1', '1'']);
+_gaq.push(['_addItem', ''1234', '3', 'DVD', 'Spiderman', '1', '1'']);
+_gaq.push(['_trackTrans']);
+ 
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+*/
+
+
+
+$this->headScript()
+        ->offsetSetFile(1, '/js/libs/modernizr-1.7.min.js')
+        // And put in into our headscript
+        ->offsetSetScript(1000, $analyticsobject);
+
+$this->headMeta()
+        ->setCharset('UTF-8')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge,chrome=1')
+        ->appendName('description', '')
+        ->appendName('author', '');
+
+$this->headTitle('OL Program 2012')
+        ->setSeparator(' - ');
+
+$this->headLink()
+        ->offsetSetStylesheet(1, $this->baseUrl() . '/css/style.css?v=2')
+        ->offsetSetStylesheet(2, 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/jquery-ui.css')
+        ->offsetSetStylesheet(3, $this->baseUrl() . '/css/handheld.css?v=2')
+        ->headLink(array('rel' => 'shortcut icon', 'href' => '/img/favicon.ico'))
+        ->headLink(array('rel' => 'apple-touch-icon', 'href' => '/img/apple-touch-icon.png'));
+
+$this->inlineScript()
+        ->offsetSetFile(1, '//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+        ->offsetSetScript(2, 'window.jQuery || document.write("<script src=\'js/libs/jquery-1.6.2.min.js\'>\x3C/script>")')
+        ->offsetSetFile(3, '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js')
+        ->offsetSetFile(4, '/js/plugins.js')
+        ->offsetSetFile(5, '/js/script.js');
+
+?><?=$this->doctype();?>
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <?=$this->headMeta()?>
+        <?=$this->headTitle()?>
+        <?=$this->headLink()?>
+        <?=$this->headStyle()?>
+        <?=$this->headScript()?>
+    </head>
+
+    <body>
+        <div id="container">
+            <?php echo $this->layout()->content; ?>
+        </div>
+        <?=$this->inlineScript()?>
+        <?#=$this->GoogleAnalytics()?>
+    </body>
+</html>

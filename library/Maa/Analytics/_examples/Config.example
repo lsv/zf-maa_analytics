@@ -1,0 +1,121 @@
+== Loading config ==
+First we need to start our class
+$c = new Maa_Analytics;
+Now the application.ini is loaded
+But maybe we want another config file for another module
+Its also easy
+$c->loadConfig(
+    new Zend_Config_Ini($this->baseUrl() . '../application/configs/test.ini', 'production')
+);
+It can also be a Zend_Config_Xml or just Zend_Config_Yaml.
+
+And we can also load more config files
+$c->loadConfig(
+    new Zend_Config_Ini($this->baseUrl() . '../application/configs/test.ini', 'production')
+    new Zend_Config_Ini($this->baseUrl() . '../application/configs/test2.ini', 'production')
+);
+
+Just remember if you have set fx maa.analytics.code in both application.ini and test.ini then it will be test.ini maa.analytics.code there will be used - newest added file overwrite settings from another file
+Using see Zend_Config::merge()
+
+See Maa/Analytics/_examples/application.ini.example for all configuration
+The only thing that cant be set in Zend_Config is the order system - more of this in next chapter
+
+== Playing with orders ==
+First we will create our object
+$object = new Maa_Analytics;
+
+Now we will create our order object
+$order = new Maa_Analytics_Ecommerce( (string)$ordernumber , (float)$totalamount);
+Set our store name or affiliate name
+$order->setStorename( (string)$storename );
+Set the tax amount
+$order->setTax( (float)$tax );
+Shipping amount
+$order->setShipping( (float)$amount );
+And so on for the next 3 options
+->setCity( (string)$city )
+->setState( (string)$state )
+->setCountry( (string)$country )
+
+All methods can be chained
+So our order could look like this
+
+$order->setStorename('Mountain View')
+        ->setTax(1)
+        ->setShipping(2)
+        ->setCity('San Jose')
+        ->setState('California')
+        ->setCountry('USA');
+
+Now adding some items to our order
+$item = new Maa_Analytics_Ecommerce_Item( (float)$unitprice , (int)$quantity );
+$item->setSku( (string)$sku )
+        ->setProductname( (string)$productname )
+        ->setCategory( (string)$category );
+
+And to add our single items we can use
+$order->addItem($item);
+
+Again chained, but we can also do it much faster, and adding the item directly to our order
+
+$option1 = array('Sku' => '2', 'Productname' => 'Sweater', 'Category' => 'Yellow');
+$option2 = array('sku' => '3', 'productname' => 'DVD', 'category' => 'Spiderman');
+It doesnt matter if the key is lower or upper case - but they should be named correctly, or you will get a exception
+$order->addItems(
+    new Maa_Analytics_Ecommerce_Item((float)$unitprice , (int)$quantity, $option1),
+    new Maa_Analytics_Ecommerce_Item((float)$unitprice , (int)$quantity, $option2)
+);
+
+So for a full order it could look like this
+
+$item = new Maa_Analytics_Ecommerce_Item(11.99, 1);
+$item->setSku('DD44')
+        ->setProductname('T-Shirt')
+        ->setCategory('Green Medium');
+
+$order = new Maa_Analytics_Ecommerce(1234, 14.99);
+$order->setStorename('Mountain View')
+    ->setTax(1)
+    ->setShipping(2)
+    ->setCity('San Jose')
+    ->setState('California')
+    ->setCountry('USA')
+    ->addItem($item)
+    ->addItems(
+        new Maa_Analytics_Ecommerce_Item(11.99, 2, array('Sku' => '2', 'Productname' => 'Sweater', 'Category' => 'Yellow')),
+        new Maa_Analytics_Ecommerce_Item(1, 1, array('sku' => '3', 'productname' => 'DVD', 'category' => 'Spiderman'))
+    );
+
+
+Now add our order to analytics code
+
+$object = new Maa_Analytics;
+$object->addOrder($order);
+
+== Adding the code to the view ==
+Our order can be built both in a model and/or in a controller
+
+Then just add the object to 
+$this->view->headScript
+** Im not really sure how to add it in the controller
+
+But you can also just add the code with
+$this->view->assign('analytics', $object);
+
+And in the head just type
+echo $this->analytics;
+and all the javascript will be generated
+
+== TODO ==
+- Add the remaning few methods from analytics
+- Add another method for loading single options in the config fx. just typing $c->loadConfig('code', $value); so you can add configs without a Zend_Config object
+- Unittests
+- Bug removing - if any ;-)
+- Other ideas?
+
+== History ==
+- Version 0.1a (2011-08-23)
+    - Initial
+
+@see README

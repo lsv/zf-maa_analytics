@@ -1,0 +1,2 @@
+[production]
+maa.analytics.setCampNameKey = 'THIS-COMES-FROM-TEST.ini'

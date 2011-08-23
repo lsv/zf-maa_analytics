@@ -1,0 +1,43 @@
+== Settings to our application.ini (or other ini file) ==
+// Remember to remove lines starting with // 
+
+// Our analytics code
+maa.analytics.code = 'UA-XXXXX-Y';
+
+// @see http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#BrowserSettingsDetection
+// True for include browserdection false otherwise
+maa.analytics.browserdetection = true/false
+
+// The next lines is for campaign
+// @see http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#CampaignFields
+maa.analytics.setAllowAnchor = true/false
+maa.analytics.setCampContentKey = (string)
+maa.analytics.setCampMediumKey = (string)
+maa.analytics.setCampNameKey = (string)
+maa.analytics.setCampNOKey = (string)
+// More campaign stuff
+// @see http://code.google.com/intl/da/apis/analytics/docs/tracking/gaTrackingTraffic.html#campaignTracking
+maa.analytics.setCampSourceKey = (string)
+maa.analytics.setCampTermKey = (string)
+maa.analytics.setCampaignCookieTimeout = 31536000000
+// @see http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#CampaignTrackingDisabled
+maa.analytics.setCampaignTrack = true/false
+
+// Cross-domain stuff
+// @see http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#CrossDomainLinking
+maa.analytics.setDomainName = (string)
+maa.analytics.setAllowLinker = true/false
+
+// If this is true, our order will check the sum and if the totalsum = (items unitprice * quantity) + tax + shipping
+// If the totalsum is NOT the same as the calculated price you will get an E_NOTICE (added as an user_error instead of a Exception, so the order still goes through)
+// If false it will not check the sum at all
+maa.analytics.checkTransSum = true/false
+
+
+// This was all the configuration needed - and you dont need to add all, but atleast maa.analytics.code should be there (or in another loaded config)
+
+
+// test2.ini.sample file - if this is loaded with our loadConfig the maa.analytics.code will be overwritten by "THIS-COMES-FROM-TEST.ini"
+
+
+// @see README
