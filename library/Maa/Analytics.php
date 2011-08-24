@@ -1,9 +1,49 @@
 <?php
+/**
+ * Analytics for Zend Framework
+ * 
+ * @category Zend_Framework
+ * @package  Maa_Analytics
+ * @author   Martin Aarhof <martin.aarhof@gmail.com>
+ * @license  http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 Unported License.
+ * @version  Version 0.1a
+ */
 
+/**
+ * Maa_Analytics is a class to create analytics javascript code
+ * 
+ * An example of the config and how to load it
+ * <code>
+ * $c = new Maa_Analytics;
+ * // Now our application.ini is loaded
+ * $c->loadConfig(
+ *   new Zend_Config_Ini($this->baseUrl() . '../application/configs/test.ini', 'production')
+ * );
+ * // Here we load another config file
+ * $c->loadConfig(
+ *   new Zend_Config_Ini($this->baseUrl() . '../application/configs/test1.ini', 'production')
+ *   new Zend_Config_Ini($this->baseUrl() . '../application/configs/test2.ini', 'production')
+ * );
+ * // And here we load 2 more
+ * </code>
+ * 
+ * And to get the javascript code just simple print it
+ * <code>
+ * echo $c;
+ * </code>
+ * 
+ * @see _examples/application.ini.sample for all configuration to the application.ini file
+ *
+ * @category Zend_Framework
+ * @package  Maa_Analytics
+ * @author Martin Aarhof <martin.aarhof@gmail.com>
+ * @license  http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 Unported License.
+ */
 class Maa_Analytics
 {
     
     /**
+     * Placeholder for our configs
      * @var Zend_Config
      */
     protected $config = array();
@@ -15,7 +55,8 @@ class Maa_Analytics
     protected $accountCode = array();
     
     /**
-     * Our google code push - needs to be here, the different code should be in right order
+     * Our google code push - needs to be here, 
+     * the different code should be in right order
      * @var array 
      */
     protected $pushArray = array(
@@ -40,10 +81,14 @@ class Maa_Analytics
         // Cross Domain
         '_setDomainName' => null,
         '_setAllowLinker' => null,
-        // Session Timeout http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#SessionTimeout
-        // Sources http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#SearchEngines
-        // Tracking Limited to a Sub-Directory http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#SetCookiePath
-        // Using a Local Server http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#UsingALocalServer
+        // Session Timeout 
+        // http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#SessionTimeout
+        // Sources 
+        // http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#SearchEngines
+        // Tracking Limited to a Sub-Directory
+        // http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#SetCookiePath
+        // Using a Local Server
+        // http://code.google.com/intl/da/apis/analytics/docs/tracking/asyncMigrationExamples.html#UsingALocalServer
         // Tracker
         '_trackPageview' => '',
         // Economic
@@ -53,12 +98,17 @@ class Maa_Analytics
         
     );
 
+    /**
+     * Our constructor
+     * Will maybe be removed by time, and replaced by a getInstance()
+     */
     public function __construct() {
         
     }
     
     /**
-     * Building and outputting our Analytics code, and loading all methods starting with _set
+     * Building and outputting our Analytics code,
+     * and loading all methods starting with _set
      * @return string
      */
     public function __toString()
@@ -81,17 +131,22 @@ class Maa_Analytics
                     }
                     break;
                 case '':
-                    $out[] = "_gaq.push(['" . $key . "']);"; break;
+                    $out[] = "_gaq.push(['" . $key . "']);";
+                    break;
                 default:
-                    $out[] = "_gaq.push(['" . $key . "', '" . $value . "']);"; break;
+                    $out[] = "_gaq.push(['" . $key . "', '" . $value . "']);";
+                    break;
             }
             
         }
         
         $out = "var _gaq = _gaq || [];\n" . implode("\n", $out) . "\n";
-        $out .= "\n(function() {\n\tvar ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n\t";
+        $out .= "\n(function() {\n\t";
+        $out .= "var ga = document.createElement('script');";
+        $out .= "ga.type = 'text/javascript'; ga.async = true;\n\t";
         $out .= "ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n\t";
-        $out .= "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n";
+        $out .= "var s = document.getElementsByTagName('script')[0];";
+        $out .= "s.parentNode.insertBefore(ga, s);\n";
         $out .= "})();";
         return $out;
         
@@ -206,7 +261,9 @@ class Maa_Analytics
     }
     
     /**
-     * Here we can load other Zend_Configs - Please be aware that the LAST added will overwrite if the config was added in another config
+     * Here we can load other Zend_Configs
+     * Please be aware that the LAST added will overwrite
+     * if the config was added in another config
      * @param Zend_Config, Zend_Config, ...
      * @return Maa_Analytics 
      * @throws Exception
@@ -226,7 +283,9 @@ class Maa_Analytics
     }
     
     /**
-     * Here we can load one other Zend_Config - Please be aware that the LAST added will overwrite if the config was added in another config
+     * Here we can load one other Zend_Config
+     * Please be aware that the LAST added will overwrite
+     * if the config was added in another config
      * @param Zend_Config
      * @return Maa_Analytics 
      */

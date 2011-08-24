@@ -1,5 +1,57 @@
 <?php
+/**
+ * Analytics for Zend Framework
+ * 
+ * @category Zend_Framework
+ * @package  Maa_Analytics
+ * @author   Martin Aarhof <martin.aarhof@gmail.com>
+ * @license  http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 Unported License.
+ * @version  Version 0.1a
+ */
 
+/**
+ * Maa_Analytics_Ecommerce to create ecommerce tracking code to our analytics code
+ * 
+ * Playing with orders
+ * <code>
+ * $object = new Maa_Analytics;
+ * $order = new Maa_Analytics_Ecommerce( (string)$ordernumber , (float)$totalamount);
+ * $order->setStorename( (string)$storename );
+ * $order->setTax( (float)$tax );
+ * $order->setShipping( (float)$amount )
+ * ->setCity( (string)$city )
+ * ->setState( (string)$state )
+ * ->setCountry( (string)$country );
+ * // All methods are chainable
+ * </code>
+ * 
+ * Adding some Items to our order
+ * <code>
+ * $item = new Maa_Analytics_Ecommerce_Item( (float)$unitprice , (int)$quantity );
+ * $item->setSku( (string)$sku )->setProductname( (string)$productname )->setCategory( (string)$category );
+ * $order->addItem($item);
+ * </code>
+ * 
+ * "Fast" creating of our item and adding to our order
+ * <code>
+ * $option1 = array('Sku' => '2', 'Productname' => 'Sweater', 'Category' => 'Yellow');
+ * $option2 = array('sku' => '3', 'productname' => 'DVD', 'category' => 'Spiderman');
+ * $order->addItems(
+ *   new Maa_Analytics_Ecommerce_Item((float)$unitprice , (int)$quantity, $option1),
+ *   new Maa_Analytics_Ecommerce_Item((float)$unitprice , (int)$quantity, $option2)
+ * );
+ * </code>
+ * 
+ * And to get the javascript code just simple print it
+ * <code>
+ * echo $object;
+ * </code>
+ *
+ * @category Zend_Framework
+ * @package  Maa_Analytics
+ * @author Martin Aarhof <martin.aarhof@gmail.com>
+ * @license  http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 Unported License.
+ */
 class Maa_Analytics_Ecommerce
     extends Maa_Analytics_Ecommerce_Abstract
 {

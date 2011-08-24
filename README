@@ -1,28 +1,38 @@
-== Setup ==
-= Requirements =
-Zend_Framework 1.11.3 (hope that newer versions also works with this code:)
-Requires PHP 5.3.x
-Small modifications to Bootstrap and application.ini
+h1. Setup
 
-= Bootstrap =
-There are few things that needed for this to run
+h2. Requirements
+
+p. Zend_Framework 1.11.3 (hope that newer versions also works with this code:)
+* Requires PHP 5.3.x
+* Small modifications to Bootstrap and application.ini
+
+h2. Bootstrap
+
+p. There are few things that needed for this to run
 In our application/Bootstrap.php we need to add this method
 
-protected function _initConfig()
+@protected function _initConfig()
 {
     $config = new Zend_Config($this->getOptions(), true);
     Zend_Registry::set('config', $config);
     return $config;
-}
+}@
 
-Thats because I dont see any other "shortcuts" to get the Zend_Config application.ini data
+p. Thats because I dont see any other "shortcuts" to get the Zend_Config application.ini data
 
-= application.ini =
+h2. application.ini
+
 In our application/configs/application.ini
 we need the following
 
-autoloadernamespaces[] = Maa
+@autoloadernamespaces[] = Maa@
 
-So the Directory can be found
+p. So the Directory can be found
 
-Now @see application.ini.sample for more configuration
+h2. Examples
+
+p. Now library/Maa/_examples/application.ini.sample for more configuration
+
+p. For a an working example see application/layouts/scripts/layout.phtml
+
+p. For documentation see public/doc/index.html

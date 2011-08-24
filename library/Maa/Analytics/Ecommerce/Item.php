@@ -1,5 +1,22 @@
 <?php
+/**
+ * Analytics for Zend Framework
+ * 
+ * @category Zend_Framework
+ * @package  Maa_Analytics
+ * @author   Martin Aarhof <martin.aarhof@gmail.com>
+ * @license  http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 Unported License.
+ * @version  Version 0.1a
+ */
 
+/**
+ * Maa_Analytics_Item to create our items for our Maa_Analytics_Ecommerce
+ *
+ * @category Zend_Framework
+ * @package  Maa_Analytics
+ * @author Martin Aarhof <martin.aarhof@gmail.com>
+ * @license  http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 Unported License.
+ */
 class Maa_Analytics_Ecommerce_Item
     extends Maa_Analytics_Ecommerce_Abstract
 {
